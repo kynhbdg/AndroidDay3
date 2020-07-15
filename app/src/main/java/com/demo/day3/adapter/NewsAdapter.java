@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.demo.day3.R;
+import com.demo.day3.interfaces.NewsOnClick;
 import com.demo.day3.model.Item;
 
 import java.util.List;
@@ -18,10 +19,15 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter {
     private Activity activity;
     private List<Item> list;
+    private NewsOnClick iOnClick;
 
     public NewsAdapter(Activity activity, List<Item> list) {
         this.activity = activity;
         this.list = list;
+    }
+
+    public void setiOnClick(NewsOnClick iOnClick) {
+        this.iOnClick = iOnClick;
     }
 
     public void reloadData(List<Item> list) {
@@ -63,6 +69,13 @@ public class NewsAdapter extends RecyclerView.Adapter {
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvContent = itemView.findViewById(R.id.tvContent);
             ivCover = itemView.findViewById(R.id.ivCover);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    iOnClick.onCLickItem(getAdapterPosition());
+                }
+            });
         }
     }
 }
