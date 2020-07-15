@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.demo.day3.model.Item;
+import com.demo.day3.network.ApiManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
