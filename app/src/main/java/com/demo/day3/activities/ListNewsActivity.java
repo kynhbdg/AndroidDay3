@@ -1,4 +1,4 @@
-package com.demo.day3;
+package com.demo.day3.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.demo.day3.AppDatabase;
+import com.demo.day3.BookmarkEntity;
+import com.demo.day3.R;
 import com.demo.day3.adapter.NewsAdapter;
 import com.demo.day3.interfaces.NewsOnClick;
 import com.demo.day3.model.Item;
@@ -26,6 +30,7 @@ public class ListNewsActivity extends AppCompatActivity {
     RecyclerView rvListNews;
     List<Item> listData;
     NewsAdapter adapter;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +58,18 @@ public class ListNewsActivity extends AppCompatActivity {
                 Item model = listData.get(position);
                 Intent intent = new Intent(ListNewsActivity.this, DetailActivity.class);
                 intent.putExtra("URL", model.getContent().getUrl());
+                intent.putExtra("ITEM", model);
                 startActivity(intent);
             }
         });
+
+        db = AppDatabase.getAppDatabase(this);
+
+//        insertBookmark();
+//        updateBookmark(1);
+//        getAllBookmark();
+//        findBookmark(1);
+
     }
 
     private void getListData() {
@@ -78,5 +92,39 @@ public class ListNewsActivity extends AppCompatActivity {
                 Toast.makeText(ListNewsActivity.this, "Fail", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void insertBookmark() {
+        BookmarkEntity bookmarkEntity = new BookmarkEntity();
+        bookmarkEntity.title = "This is title";
+        bookmarkEntity.content = "This is content";
+        db.bookmarkDao().insertBookmark(bookmarkEntity);
+    }
+
+    private void updateBookmark(int id) {
+        BookmarkEntity bookmarkEntity = db.bookmarkDao().getBookmark(id);
+        bookmarkEntity.title = "This is title update";
+        db.bookmarkDao().updateBookmark(bookmarkEntity);
+    }
+
+    private void findBookmark(int id) {
+        BookmarkEntity bookmarkEntity = db.bookmarkDao().getBookmark(id);
+        Log.d("TAG", "Find Bookmark with id: " + bookmarkEntity.id + ", title: " + bookmarkEntity.title);
+    }
+
+    private void deleteBookmark(int id) {
+        BookmarkEntity bookmarkEntity = db.bookmarkDao().getBookmark(id);
+        db.bookmarkDao().deleteBookmark(bookmarkEntity);
+    }
+
+    private void deleteAllBookmark() {
+        db.bookmarkDao().deleteAll();
+    }
+
+    private void getAllBookmark() {
+        List<BookmarkEntity> list = db.bookmarkDao().getAllBookmark();
+        for (BookmarkEntity model : list) {
+            Log.d("TAG", "id: " + model.id + ", title: " + model.title);
+        }
     }
 }

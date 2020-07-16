@@ -1,4 +1,4 @@
-package com.demo.day3;
+package com.demo.day3.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.demo.day3.R;
 import com.demo.day3.model.Item;
 import com.demo.day3.network.ApiManager;
 

@@ -1,6 +1,8 @@
 package com.demo.day3.model;
 
-public class Content {
+import java.io.Serializable;
+
+public class Content implements Serializable {
     public String getDescription() {
         return description;
     }
